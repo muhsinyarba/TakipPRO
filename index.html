@@ -3,110 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Öğretmen Takip PRO - V31</title>
+<title>Takip PRO V32</title>
 <style>
-  :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; --w: #f59e0b; }
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+  :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; touch-action: manipulation; }
   body { background: #f0f4ff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: fixed; width: 100%; }
-  header { background: var(--p); color: white; padding: 10px; text-align: center; font-size: 14px; font-weight: bold; flex-shrink: 0; }
-  .top-panel { background: #1e293b; color: white; padding: 8px; flex-shrink: 0; }
+  header { background: var(--p); color: white; padding: 12px; text-align: center; font-size: 15px; font-weight: bold; flex-shrink: 0; }
+  .top-panel { background: #1e293b; color: white; padding: 10px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; }
   .main-container { display: flex; flex: 1; overflow: hidden; }
-  nav { width: 75px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; }
-  nav button { padding: 15px 2px; border: none; background: none; color: white; font-size: 10px; cursor: pointer; border-bottom: 1px solid #2563eb; opacity: 0.8; }
-  nav button.active { background: var(--p); opacity: 1; border-left: 5px solid white; font-weight: bold; }
-  .content { flex: 1; overflow-y: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+  
+  /* SOL MENÜ - ZORUNLU SABİT */
+  nav { width: 75px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; z-index: 9999; }
+  nav button { padding: 20px 2px; border: none; background: none; color: white; font-size: 10px; cursor: pointer; border-bottom: 1px solid #2563eb; outline: none; }
+  nav button.active { background: var(--p); border-left: 5px solid white; font-weight: bold; }
+  
+  /* İÇERİK ALANI */
+  .content { flex: 1; overflow-y: auto; padding: 12px; -webkit-overflow-scrolling: touch; background: #f0f4ff; }
   .page { display: none; }
-  .page.active { display: block; }
-  .card { background: white; border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-  h3 { font-size: 13px; color: var(--p); margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
-  .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-  .stu-name { font-size: 10.5px; font-weight: bold; color: var(--p); flex: 1; cursor: pointer; text-decoration: underline; }
-  .btn-s { padding: 8px 10px; border-radius: 4px; border: 1px solid #ddd; background: white; font-weight: bold; font-size: 10px; min-width: 40px; }
-  .btn-s.on { background: var(--p); color: white; border-color: var(--p); }
-  .btn-s.off { background: var(--d); color: white; border-color: var(--d); }
-  .btn-m { width: 100%; padding: 12px; border: none; border-radius: 6px; background: var(--p); color: white; font-weight: bold; cursor: pointer; }
-  select, input, textarea { width: 100%; padding: 10px; margin-bottom: 8px; border-radius: 5px; border: 1px solid #cbd5e1; font-size: 13px; }
+  .page.active { display: block !important; }
+  
+  .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+  .stu-link { color: var(--p); font-weight: bold; font-size: 11px; text-decoration: underline; flex: 1; }
+  .btn-s { padding: 8px 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 10px; min-width: 45px; background: white; }
+  .btn-s.on { background: var(--p); color: white; }
+  .btn-s.off { background: var(--d); color: white; }
+  .btn-m { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--p); color: white; font-weight: bold; cursor: pointer; }
   
   /* KARNE MODAL */
-  #karneModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:3000; align-items:center; justify-content:center; padding:20px; }
-  .karne-card { background:white; border-radius:15px; width:100%; max-width:380px; padding:20px; position:relative; }
-  .karne-header { text-align:center; border-bottom:2px solid var(--p); margin-bottom:15px; padding-bottom:10px; }
-  .karne-row { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f0f0f0; font-size:14px; }
-  .karne-val { font-weight:bold; color:var(--p); }
+  #kMdl { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center; }
+  .k-card { background:white; border-radius:15px; width:90%; max-width:350px; padding:20px; }
 </style>
 </head>
 <body>
 
-<header>Öğretmen Takip PRO - V31</header>
+<header>ÖĞRETMEN TAKİP PRO V32</header>
 
 <div class="top-panel">
-  <div style="display:flex; justify-content:space-between; align-items:center; color:white; font-size:11px;">
-    <span>Sınıf: <b id="curDisplay">...</b></span>
-    <button onclick="saveAll()" style="background:var(--s); color:white; border:none; padding:6px 12px; border-radius:5px; font-weight:bold;">KAYDET</button>
-  </div>
+  <span id="cDisp">4-B Sınıfı</span>
+  <button onclick="sv()" style="background:var(--s); color:white; border:none; padding:8px 15px; border-radius:5px; font-weight:bold;">KAYDET</button>
 </div>
 
 <div class="main-container">
-  <nav id="sidebar">
-    <button onclick="pg('p1', this)" class="active">YOKLAMA</button>
-    <button onclick="pg('p2', this)">KATILIM</button>
-    <button onclick="pg('p3', this)">ÖDEV</button>
-    <button onclick="pg('p6', this)">SÖZLÜ</button>
-    <button onclick="pg('p4', this)">RAPOR</button>
-    <button onclick="pg('p5', this)">AYAR</button>
+  <nav>
+    <button id="b1" onclick="pg('p1', this)" class="active">YOKLAMA</button>
+    <button id="b2" onclick="pg('p2', this)">KATILIM</button>
+    <button id="b3" onclick="pg('p3', this)">ÖDEV</button>
+    <button id="b6" onclick="pg('p6', this)">SÖZLÜ</button>
+    <button id="b4" onclick="pg('p4', this)">RAPOR</button>
+    <button id="b5" onclick="pg('p5', this)">AYAR</button>
   </nav>
 
   <div class="content">
     <div id="p1" class="page active"><div class="card"><h3>Yoklama</h3><input type="date" id="t1" onchange="r()"><div id="l1"></div></div></div>
-    <div id="p2" class="page"><div class="card"><h3>Katılım (Ders Seçin)</h3><select id="s2" onchange="r()"></select><div id="l2"></div></div></div>
+    <div id="p2" class="page"><div class="card"><h3>Katılım</h3><select id="s2" onchange="r()"></select><div id="l2"></div></div></div>
     <div id="p3" class="page"><div class="card"><h3>Ödev Takibi</h3><select id="s3" onchange="r()"></select><div id="l3"></div></div></div>
-    <div id="p6" class="page"><div class="card"><h3>Sözlü Puan</h3><select id="s6" onchange="r()"></select><div id="l6"></div></div></div>
-    
-    <div id="p4" class="page">
-        <div class="card">
-            <h3>Genel Rapor (İsme Tıkla)</h3>
-            <button class="btn-m" style="background:var(--s); margin-bottom:12px;" onclick="exExcel()">📥 EXCEL İNDİR</button>
-            <div id="l4" style="overflow-x:auto;"></div>
-        </div>
-    </div>
-
+    <div id="p6" class="page"><div class="card"><h3>Sözlü Notu</h3><select id="s6" onchange="r()"></select><div id="l6"></div></div></div>
+    <div id="p4" class="page"><div class="card"><h3>Genel Rapor (İsme Tıkla)</h3><button class="btn-m" style="background:var(--s); margin-bottom:10px" onclick="ex()">EXCEL İNDİR</button><div id="l4"></div></div></div>
     <div id="p5" class="page">
-        <div class="card"><h3>Sınıf ve Liste Ayarı</h3><input type="text" id="iCN"><textarea id="iCS" rows="5"></textarea><button class="btn-m" onclick="addNewCls()">Kaydet</button></div>
-        <div class="card"><h3>Dersler</h3><textarea id="iDS" rows="2"></textarea><button class="btn-m" style="background:var(--s)" onclick="updateDers()">Güncelle</button></div>
+        <div class="card"><h3>Sınıf Ayarı</h3><textarea id="iCS" rows="5"></textarea><button class="btn-m" onclick="clsSv()">Listeyi Güncelle</button></div>
+        <div class="card"><button class="btn-m" style="background:var(--d)" onclick="localStorage.clear();location.reload();">SİSTEMİ SIFIRLA</button></div>
     </div>
   </div>
 </div>
 
-<div id="karneModal" onclick="this.style.display='none'">
-    <div class="karne-card" onclick="event.stopPropagation()">
-        <div class="karne-header"><h2 id="kName">Öğrenci</h2><p id="kCls">Sınıf</p></div>
-        <div class="karne-row"><span>Yokluk (Toplam)</span><span class="karne-val" id="kYok">0</span></div>
-        <div class="karne-row"><span>Derse Katılım (⭐)</span><span class="karne-val" id="kKat">0</span></div>
-        <div class="karne-row"><span>Ödev Tamamlama (✅)</span><span class="karne-val" id="kOdv">0</span></div>
-        <div class="karne-row"><span>Sözlü Artısı (+)</span><span class="karne-val" id="kSoz">0</span></div>
-        <button class="btn-m" style="margin-top:20px; background:#475569" onclick="document.getElementById('karneModal').style.display='none'">KAPAT</button>
-    </div>
-</div>
+<div id="kMdl" onclick="this.style.display='none'"><div class="k-card" id="kBox" onclick="event.stopPropagation()"></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const defO = ["Ali Ömer ARSLAN","Arda ARSLAN","Ayşe ŞINIK","Barış HALLUM","Beyazıt GÖRKEN","Bilgesu TOPRAK","Bora ALAS","Defne KAYNAR","Derin URAZ","Elif ÇİTKAP","Emir Efe ALPER","Esra DEMİRLİ","Eymen HALICI","Hüma ALTINIŞIK","İpek ELDEK","Irmak ERDEM","Kumsal GÜNDOĞARKEN","Melis KILIÇ","Mert BALCIOĞLU","Musa KARAÖZ","Mustafa DAL","Naz AKGÜN","Nisa YALILAR","Onuralp TOK","Önder TURĞAY","Poyraz SEZGİN","Roza AYDIN","Rüzgar GÜL","Yaz YILMAZ","Yusuf BİRLİK"];
 const defD = ["Türkçe","Matematik","Fen","Sosyal","İngilizce","Trafik","İnsan Hakları"];
 
-let st = JSON.parse(localStorage.getItem('ok_v31')) || {
-    cls: {"4-B": defO}, cur: "4-B", ders: defD,
-    db: {v:{}, k:{}, od:{}, sz:{}}
-};
+let st = JSON.parse(localStorage.getItem('pro_v32')) || { cls: {"4-B": defO}, cur: "4-B", ders: defD, db: {v:{}, k:{}, od:{}, sz:{}} };
 
 function pg(id, btn) {
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.querySelectorAll('#sidebar button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).style.display = 'block';
     btn.classList.add('active');
     if(id==='p4') rRap();
 }
 
-function saveAll() { localStorage.setItem('ok_v31', JSON.stringify(st)); alert("Başarıyla Kaydedildi!"); }
+function sv() { localStorage.setItem('pro_v32', JSON.stringify(st)); alert("Kaydedildi!"); }
 
 function u(t, k, n, v) { 
     const key = k + "_" + st.cur;
@@ -119,56 +97,42 @@ function r() {
     const oL = st.cls[st.cur] || [];
     const tV = document.getElementById('t1').value, dK = document.getElementById('s2').value, dO = document.getElementById('s3').value, dS = document.getElementById('s6').value;
     
-    document.getElementById('l1').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><div><button class="btn-s ${st.db.v[tV+"_"+st.cur]?.[s]==='y'?'':'on'}" onclick="u('v','${tV}','${s}','v')">VAR</button><button class="btn-s ${st.db.v[tV+"_"+st.cur]?.[s]==='y'?'on':''}" onclick="u('v','${tV}','${s}','y')">YOK</button></div></div>`).join('');
-    document.getElementById('l2').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.k[(dK||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('k','${dK||'G'}','${s}',${!st.db.k[(dK||'G')+"_"+st.cur]?.[s]})">${st.db.k[(dK||'G')+"_"+st.cur]?.[s]?'⭐':'PAS'}</button></div>`).join('');
-    document.getElementById('l3').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.od[(dO||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('od','${dO||'G'}','${s}',${!st.db.od[(dO||'G')+"_"+st.cur]?.[s]})">${st.db.od[(dO||'G')+"_"+st.cur]?.[s]?'✅':'YOK'}</button></div>`).join('');
-    document.getElementById('l6').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><div><button class="btn-s ${st.db.sz[(dS||'G')+"_"+st.cur]?.[s]==='p'?'on':''}" onclick="u('sz','${dS||'G'}','${s}','p')">+</button><button class="btn-s ${st.db.sz[(dS||'G')+"_"+st.cur]?.[s]==='e'?'off':''}" onclick="u('sz','${dS||'G'}','${s}','e')">-</button></div></div>`).join('');
+    document.getElementById('l1').innerHTML = oL.map(s => `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><div><button class="btn-s ${st.db.v[tV+"_"+st.cur]?.[s]==='y'?'off':''}" onclick="u('v','${tV}','${s}','y')">YOK</button></div></div>`).join('');
+    document.getElementById('l2').innerHTML = oL.map(s => `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><button class="btn-s ${st.db.k[(dK||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('k','${dK||'G'}','${s}',${!st.db.k[(dK||'G')+"_"+st.cur]?.[s]})">⭐</button></div>`).join('');
+    document.getElementById('l3').innerHTML = oL.map(s => `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><button class="btn-s ${st.db.od[(dO||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('od','${dO||'G'}','${s}',${!st.db.od[(dO||'G')+"_"+st.cur]?.[s]})">✅</button></div>`).join('');
+    document.getElementById('l6').innerHTML = oL.map(s => `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><button class="btn-s ${st.db.sz[(dS||'G')+"_"+st.cur]?.[s]==='p'?'on':''}" onclick="u('sz','${dS||'G'}','${s}','p')">+</button></div>`).join('');
 }
 
-function openKarne(n) {
+function krn(n) {
     let y=0, k=0, o=0, p=0;
     Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]==='y') y++; });
     Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) k++; });
     Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) o++; });
     Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]==='p') p++; });
-    
-    document.getElementById('kName').innerText = n;
-    document.getElementById('kCls').innerText = st.cur;
-    document.getElementById('kYok').innerText = y + " GÜN";
-    document.getElementById('kKat').innerText = k + " YILDIZ";
-    document.getElementById('kOdv').innerText = o + " ADET";
-    document.getElementById('kSoz').innerText = p + " PUAN";
-    document.getElementById('karneModal').style.display = 'flex';
+    document.getElementById('kBox').innerHTML = `<h2 style="color:var(--p); border-bottom:2px solid #eee; padding-bottom:10px">${n}</h2><div style="padding:15px 0"><p>Yokluk: <b>${y}</b></p><p>Yıldız: <b>${k}</b></p><p>Ödev: <b>${o}</b></p><p>Sözlü (+): <b>${p}</b></p></div><button class="btn-m" onclick="document.getElementById('kMdl').style.display='none'">KAPAT</button>`;
+    document.getElementById('kMdl').style.display = 'flex';
 }
 
 function rRap() {
-    let h = "<table border='1' style='width:100%; border-collapse:collapse; font-size:11px;'><tr><th>Öğrenci Adı</th><th>Y</th><th>⭐</th><th>✅</th><th>+</th></tr>";
+    let h = "<table id='rt'><tr><th>Öğrenci</th><th>Y</th><th>⭐</th><th>✅</th><th>+</th></tr>";
     st.cls[st.cur].forEach(s => {
         let y=0, k=0, o=0, p=0;
         Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]==='y') y++; });
         Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) k++; });
         Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) o++; });
         Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]==='p') p++; });
-        h += `<tr><td style="text-align:left; color:blue;" onclick="openKarne('${s}')"><u>${s}</u></td><td>${y}</td><td>${k}</td><td>${o}</td><td>${p}</td></tr>`;
+        h += `<tr><td style="text-align:left; color:blue" onclick="krn('${s}')">${s}</td><td>${y}</td><td>${k}</td><td>${o}</td><td>${p}</td></tr>`;
     });
     document.getElementById('l4').innerHTML = h + "</table>";
 }
 
-function exExcel() {
-    const ws = XLSX.utils.table_to_sheet(document.querySelector("#l4 table"));
-    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "SınıfRaporu");
-    XLSX.writeFile(wb, st.cur + "_Rapor.xlsx");
-}
-
-function updateDers() { st.ders = document.getElementById('iDS').value.split(',').map(x=>x.trim()).filter(x=>x!==""); saveAll(); location.reload(); }
-function addNewCls() { const n = document.getElementById('iCN').value.trim(); const s = document.getElementById('iCS').value.split('\n').filter(x=>x.trim()!=="").sort((a,b)=>a.localeCompare(b,'tr')); if(!n || s.length===0) return alert("Hata!"); st.cls[n] = s; st.cur = n; saveAll(); location.reload(); }
+function ex() { XLSX.writeFile(XLSX.utils.book_new().appendChild(XLSX.utils.table_to_sheet(document.getElementById('rt'))), st.cur + "_Rapor.xlsx"); }
 
 window.onload = function() {
     document.getElementById('t1').value = new Date().toISOString().split('T')[0];
-    const opt = '<option value="">Ders Seçiniz</option>' + st.ders.map(d => `<option value="${d}">${d}</option>`).join('');
+    let opt = '<option value="">-Seç-</option>' + st.ders.map(d => `<option value="${d}">${d}</option>`).join('');
     ['s2','s3','s6'].forEach(id => document.getElementById(id).innerHTML = opt);
-    document.getElementById('curDisplay').innerText = st.cur;
-    document.getElementById('iDS').value = st.ders.join(', ');
+    document.getElementById('iCS').value = st.cls[st.cur].join('\n');
     r();
 };
 </script>
