@@ -3,66 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Öğretmen Takip PRO V40</title>
+<title>Takip PRO</title>
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Takip PRO">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563eb">
 
 <style>
   :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
   
-  /* EKRAN SABİTLEME - DONMA ÖNLEYİCİ */
   body { background: #f0f4ff; height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; position: fixed; top:0; left:0; padding-top: env(safe-area-inset-top); }
-  
-  header { background: var(--p); color: white; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; flex-shrink: 0; z-index: 10001; }
-  
-  .top-panel { background: #1e293b; color: white; padding: 8px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; z-index: 10001; }
-
+  header { background: var(--p); color: white; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; flex-shrink: 0; }
+  .top-panel { background: #1e293b; color: white; padding: 8px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; }
   .main-container { display: flex; flex: 1; overflow: hidden; position: relative; width: 100%; }
   
-  /* MENÜ - CSS İLE ZORLANMIŞ SABİT YAPI */
-  nav { width: 75px; background: #1e3a8a; display: flex !important; flex-direction: column; flex-shrink: 0; height: 100%; z-index: 10002; border-right: 1px solid #1e3a8a; }
-  nav button { padding: 18px 2px; border: none; background: none; color: white; font-size: 9px; cursor: pointer; border-bottom: 1px solid #2563eb; width: 100%; text-align: center; display: block !important; }
+  /* SABİT YAN MENÜ */
+  nav { width: 75px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; height: 100%; z-index: 1000; border-right: 1px solid #1e3a8a; }
+  nav button { padding: 18px 2px; border: none; background: none; color: white; font-size: 10px; cursor: pointer; border-bottom: 1px solid #2563eb; width: 100%; text-align: center; }
   nav button.active { background: var(--p); border-left: 5px solid white; font-weight: bold; }
 
   /* İÇERİK ALANI */
   .content-wrapper { flex: 1; position: relative; height: 100%; background: #f0f4ff; overflow: hidden; }
-  
-  .page { 
-    display: none; 
-    position: absolute; 
-    top: 0; left: 0; right: 0; bottom: 0; 
-    padding: 12px; 
-    overflow-y: auto; 
-    background: #f0f4ff;
-    -webkit-overflow-scrolling: touch;
-    z-index: 1;
-  }
-  .page.active { display: block !important; visibility: visible !important; z-index: 500; }
+  .page { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px; overflow-y: auto; background: #f0f4ff; -webkit-overflow-scrolling: touch; }
+  .page.active { display: block !important; }
 
-  .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; }
-  .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+  .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
   .stu-link { color: var(--p); font-weight: bold; font-size: 11px; text-decoration: underline; flex: 1; }
   
-  .btn-s { padding: 8px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 10px; min-width: 45px; background: white; font-weight: bold; }
+  .btn-s { padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; font-size: 10px; min-width: 50px; background: white; font-weight: bold; }
   .btn-s.off { background: var(--d); color: white; }
-  
-  .btn-n { padding: 8px; border-radius: 5px; border: 1px solid #ddd; font-size: 11px; font-weight: bold; width: 35px; background: #f8fafc; }
+  .btn-n { padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; font-weight: bold; width: 40px; background: #f8fafc; }
   .btn-n.selected { background: var(--p); color: white; }
 
   .btn-m { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--p); color: white; font-weight: bold; cursor: pointer; }
   select, input, textarea { width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; background: white; }
   
   table { width: 100%; border-collapse: collapse; font-size: 10px; background: white; margin-top: 10px; }
-  th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
 
-  #kMdl { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:20000; align-items:center; justify-content:center; }
+  #kMdl { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center; }
   .k-card { background:white; border-radius:20px; width:85%; max-width:350px; padding:25px; }
 </style>
 </head>
 <body>
 
-<header>ÖĞRETMEN TAKİP PRO V40</header>
+<header id="appHeader">ÖĞRETMEN TAKİP PRO</header>
 
 <div class="top-panel">
   <span id="curClassName" style="font-size:11px;">Yükleniyor...</span>
@@ -71,29 +60,30 @@
 
 <div class="main-container">
   <nav id="sidebar">
-    <button onclick="changePage('p1', this)" class="active">YOKLAMA</button>
-    <button onclick="changePage('p2', this)">KATILIM</button>
-    <button onclick="changePage('p3', this)">ÖDEV</button>
-    <button onclick="changePage('p6', this)">SÖZLÜ</button>
-    <button onclick="changePage('p4', this)">RAPOR</button>
-    <button onclick="changePage('p5', this)">AYAR</button>
+    <button onclick="cp('p1', this)" class="active">YOKLAMA</button>
+    <button onclick="cp('p2', this)">KATILIM</button>
+    <button onclick="cp('p3', this)">ÖDEV</button>
+    <button onclick="cp('p6', this)">SÖZLÜ</button>
+    <button onclick="cp('p4', this)">RAPOR</button>
+    <button onclick="cp('p5', this)">AYAR</button>
   </nav>
 
   <div class="content-wrapper">
-    <div id="p1" class="page active"><div class="card"><h3>Yoklama</h3><input type="date" id="t1" onchange="renderUI()"><div id="l1"></div></div></div>
-    <div id="p2" class="page"><div class="card"><h3>Katılım</h3><select id="s2" onchange="renderUI()"></select><div id="l2"></div></div></div>
+    <div id="p1" class="page active"><div class="card"><h3>Günlük Yoklama</h3><input type="date" id="t1" onchange="renderUI()"><div id="l1"></div></div></div>
+    <div id="p2" class="page"><div class="card"><h3>Derse Katılım</h3><select id="s2" onchange="renderUI()"></select><div id="l2"></div></div></div>
     <div id="p3" class="page"><div class="card"><h3>Ödev Takibi</h3><select id="s3" onchange="renderUI()"></select><div id="l3"></div></div></div>
-    <div id="p6" class="page"><div class="card"><h3>Sözlü (1-4)</h3><select id="s6" onchange="renderUI()"></select><div id="l6"></div></div></div>
-    <div id="p4" class="page"><div class="card"><h3>Genel Rapor</h3><button class="btn-m" style="background:var(--s); margin-bottom:10px" onclick="exportExcel()">📥 EXCEL İNDİR</button><div id="l4"></div></div></div>
+    <div id="p6" class="page"><div class="card"><h3>Sözlü Puanı (1-4)</h3><select id="s6" onchange="renderUI()"></select><div id="l6"></div></div></div>
+    <div id="p4" class="page"><div class="card"><h3>Genel Rapor</h3><button class="btn-m" style="background:var(--s); margin-bottom:10px" onclick="ex()">📥 EXCEL İNDİR</button><div id="l4"></div></div></div>
+    
     <div id="p5" class="page">
         <div class="card">
             <h3>Sınıf ve Liste Ayarı</h3>
             <input type="text" id="iCN" placeholder="Sınıf Adı (Örn: 4-B)">
-            <textarea id="iCS" rows="5" placeholder="Öğrenciler (Her satıra bir isim)"></textarea>
+            <textarea id="iCS" rows="6" placeholder="Öğrenciler (Her satıra bir isim)"></textarea>
             <button class="btn-m" onclick="addNewClass()">Sınıfı Kaydet</button>
         </div>
         <div class="card">
-            <button class="btn-m" style="background:var(--d)" onclick="if(confirm('TÜM VERİLER SIFIRLANSIN MI?')){localStorage.clear();location.reload();}">⚠️ SİSTEMİ SIFIRLA</button>
+            <button class="btn-m" style="background:var(--d)" onclick="if(confirm('Sistem sıfırlansın mı?')){localStorage.clear();location.reload();}">⚠️ SİSTEMİ SIFIRLA</button>
         </div>
     </div>
   </div>
@@ -103,85 +93,74 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// 4-B Sabit Veriler
-const defaultStudents = ["Ali Ömer ARSLAN","Arda ARSLAN","Ayşe ŞINIK","Barış HALLUM","Beyazıt GÖRKEN","Bilgesu TOPRAK","Bora ALAS","Defne KAYNAR","Derin URAZ","Elif ÇİTKAP","Emir Efe ALPER","Esra DEMİRLİ","Eymen HALICI","Hüma ALTINIŞIK","İpek ELDEK","Irmak ERDEM","Kumsal GÜNDOĞARKEN","Melis KILIÇ","Mert BALCIOĞLU","Musa KARAÖZ","Mustafa DAL","Naz AKGÜN","Nisa YALILAR","Onuralp TOK","Önder TURĞAY","Poyraz SEZGİN","Roza AYDIN","Rüzgar GÜL","Yaz YILMAZ","Yusuf BİRLİK"];
-const defaultCourses = ["Türkçe","Matematik","Fen","Sosyal","İngilizce","Trafik","İnsan Hakları"];
+const defO = ["Ali Ömer ARSLAN","Arda ARSLAN","Ayşe ŞINIK","Barış HALLUM","Beyazıt GÖRKEN","Bilgesu TOPRAK","Bora ALAS","Defne KAYNAR","Derin URAZ","Elif ÇİTKAP","Emir Efe ALPER","Esra DEMİRLİ","Eymen HALICI","Hüma ALTINIŞIK","İpek ELDEK","Irmak ERDEM","Kumsal GÜNDOĞARKEN","Melis KILIÇ","Mert BALCIOĞLU","Musa KARAÖZ","Mustafa DAL","Naz AKGÜN","Nisa YALILAR","Onuralp TOK","Önder TURĞAY","Poyraz SEZGİN","Roza AYDIN","Rüzgar GÜL","Yaz YILMAZ","Yusuf BİRLİK"];
+const defD = ["Türkçe","Matematik","Fen","Sosyal","İngilizce","Trafik","İnsan Hakları"];
 
-// V40 Bellek Anahtarı
-let appData = JSON.parse(localStorage.getItem('ok_v40_final')) || { cls: {"4-B": defaultStudents}, cur: "4-B", ders: defaultCourses, db: {v:{}, k:{}, od:{}, sz:{}} };
+let st = JSON.parse(localStorage.getItem('ok_v42')) || { cls: {"4-B": defO}, cur: "4-B", ders: defD, db: {v:{}, k:{}, od:{}, sz:{}} };
 
-function changePage(id, btn) {
+function cp(id, btn) {
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).style.display = 'block';
-    document.getElementById(id).classList.add('active');
     btn.classList.add('active');
     if(id === 'p4') renderReport();
 }
 
-function saveAll() { localStorage.setItem('ok_v40_final', JSON.stringify(appData)); alert("Kaydedildi!"); }
+function saveAll() { localStorage.setItem('ok_v42', JSON.stringify(st)); alert("Kaydedildi!"); }
 
 function addNewClass() {
     const n = document.getElementById('iCN').value.trim();
     const s = document.getElementById('iCS').value.split('\n').filter(x=>x.trim()!=="").sort((a,b)=>a.localeCompare(b,'tr'));
     if(!n || s.length===0) return alert("Hata!");
-    appData.cls[n] = s; appData.cur = n; saveAll(); location.reload();
+    st.cls[n] = s; st.cur = n; saveAll(); location.reload();
 }
 
-function updateVal(type, key, name, val) {
-    const fKey = key + "_" + appData.cur;
-    if(!appData.db[type][fKey]) appData.db[type][fKey] = {};
-    appData.db[type][fKey][name] = val;
+function upV(type, key, name, val) {
+    const fK = key + "_" + st.cur;
+    if(!st.db[type][fK]) st.db[type][fK] = {};
+    st.db[type][fK][name] = val;
     renderUI();
 }
 
 function renderUI() {
-    const list = appData.cls[appData.cur] || [];
+    const list = st.cls[st.cur] || [];
     const tV = document.getElementById('t1').value, dK = document.getElementById('s2').value || "G", dO = document.getElementById('s3').value || "G", dS = document.getElementById('s6').value || "G";
 
-    document.getElementById('l1').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${appData.db.v[tV+"_"+appData.cur]?.[s]==='y'?'off':''}" onclick="updateVal('v','${tV}','${s}','y')">YOK</button></div>`).join('');
-    document.getElementById('l2').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${appData.db.k[dK+"_"+appData.cur]?.[s]?'on':''}" onclick="updateVal('k','${dK}','${s}',${!appData.db.k[dK+"_"+appData.cur]?.[s]})">⭐</button></div>`).join('');
-    document.getElementById('l3').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${appData.db.od[dO+"_"+appData.cur]?.[s]?'on':''}" onclick="updateVal('od','${dO}','${s}',${!appData.db.od[dO+"_"+appData.cur]?.[s]})">✅</button></div>`).join('');
+    document.getElementById('l1').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.v[tV+"_"+st.cur]?.[s]==='y'?'off':''}" onclick="upV('v','${tV}','${s}','y')">YOK</button></div>`).join('');
+    document.getElementById('l2').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.k[dK+"_"+st.cur]?.[s]?'on':''}" onclick="upV('k','${dK}','${s}',${!st.db.k[dK+"_"+st.cur]?.[s]})">⭐</button></div>`).join('');
+    document.getElementById('l3').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.od[dO+"_"+st.cur]?.[s]?'on':''}" onclick="upV('od','${dO}','${s}',${!st.db.od[dO+"_"+st.cur]?.[s]})">✅</button></div>`).join('');
     document.getElementById('l6').innerHTML = list.map(s => {
-        const v = appData.db.sz[dS+"_"+appData.cur]?.[s];
-        return `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><div style="display:flex; gap:3px;">${[1,2,3,4].map(n => `<button class="btn-n ${v==n?'selected':''}" onclick="updateVal('sz','${dS}','${s}',${n})">${n}</button>`).join('')}</div></div>`;
+        const v = st.db.sz[dS+"_"+st.cur]?.[s];
+        return `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><div style="display:flex; gap:4px;">${[1,2,3,4].map(n => `<button class="btn-n ${v==n?'selected':''}" onclick="upV('sz','${dS}','${s}',${n})">${n}</button>`).join('')}</div></div>`;
     }).join('');
 }
 
 function krn(n) {
     let y=0, k=0, o=0, pts=[];
-    Object.entries(appData.db.v).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]==='y') y++; });
-    Object.entries(appData.db.k).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]) k++; });
-    Object.entries(appData.db.od).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]) o++; });
-    Object.entries(appData.db.sz).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]) pts.push(v[n]); });
+    Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]==='y') y++; });
+    Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) k++; });
+    Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) o++; });
+    Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) pts.push(v[n]); });
     let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "0";
-    document.getElementById('kBox').innerHTML = `<h2>${n}</h2><hr><br><p>Yokluk: <b>${y}</b></p><p>Yıldız: <b>${k}</b></p><p>Ödev: <b>${o}</b></p><p>Sözlü Ort: <b>${avg}</b></p><br><button class="btn-m" onclick="document.getElementById('kMdl').style.display='none'">KAPAT</button>`;
+    document.getElementById('kBox').innerHTML = `<h2 style="color:var(--p)">${n}</h2><hr><br><p>Yokluk: <b>${y}</b></p><p>Yıldız: <b>${k}</b></p><p>Ödev: <b>${o}</b></p><p>Sözlü Ort: <b>${avg}</b></p><br><button class="btn-m" onclick="document.getElementById('kMdl').style.display='none'">KAPAT</button>`;
     document.getElementById('kMdl').style.display = 'flex';
 }
 
 function renderReport() {
     let h = "<table id='rt'><tr><th>Öğrenci</th><th>Y</th><th>⭐</th><th>✅</th><th>S.Ort</th></tr>";
-    appData.cls[appData.cur].forEach(s => {
+    st.cls[st.cur].forEach(s => {
         let y=0, k=0, o=0, pts=[];
-        Object.entries(appData.db.v).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]==='y') y++; });
-        Object.entries(appData.db.k).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]) k++; });
-        Object.entries(appData.db.od).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]) o++; });
-        Object.entries(appData.db.sz).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]) pts.push(v[s]); });
+        Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]==='y') y++; });
+        Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) k++; });
+        Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) o++; });
+        Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) pts.push(v[s]); });
         let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "-";
         h += `<tr><td style="text-align:left; color:blue" onclick="krn('${s}')">${s}</td><td>${y}</td><td>${k}</td><td>${o}</td><td>${avg}</td></tr>`;
     });
     document.getElementById('l4').innerHTML = h + "</table>";
 }
 
-function exportExcel() { XLSX.writeFile(XLSX.utils.book_new().appendChild(XLSX.utils.table_to_sheet(document.getElementById('rt'))), appData.cur + "_Rapor.xlsx"); }
+function ex() { XLSX.writeFile(XLSX.utils.book_new().appendChild(XLSX.utils.table_to_sheet(document.getElementById('rt'))), st.cur + "_Rapor.xlsx"); }
 
 window.onload = function() {
-    document.getElementById('t1').value = new Date().toISOString().split('T')[0];
-    const opt = '<option value="">-Ders-</option>' + appData.ders.map(d => `<option value="${d}">${d}</option>`).join('');
-    ['s2','s3','s6'].forEach(id => document.getElementById(id).innerHTML = opt);
-    document.getElementById('curClassName').innerText = "Sınıf: " + appData.cur;
-    renderUI();
-};
-</script>
-</body>
-</html>
+    document.getElementById('t1').value =
