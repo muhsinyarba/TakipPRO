@@ -3,43 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Takip PRO V45</title>
+<title>Öğretmen Takip PRO</title>
+
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2563eb">
 
 <style>
-  :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; }
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
+  :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; --bg: #f0f4ff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
   
-  body { background: #f0f4ff; height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; position: fixed; top:0; left:0; padding-top: env(safe-area-inset-top); }
-  header { background: var(--p); color: white; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; flex-shrink: 0; }
-  .top-panel { background: #1e293b; color: white; padding: 8px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; }
-  .main-container { display: flex; flex: 1; overflow: hidden; position: relative; width: 100%; }
+  body { background: var(--bg); height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; position: fixed; top:0; left:0; padding-top: env(safe-area-inset-top); }
+  header { background: var(--p); color: white; padding: 12px; text-align: center; font-size: 15px; font-weight: bold; flex-shrink: 0; }
+  .top-panel { background: #1e293b; color: white; padding: 8px 12px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; }
   
-  nav { width: 75px; background: #1e3a8a; display: flex !important; flex-direction: column; flex-shrink: 0; height: 100%; z-index: 9999; }
-  nav button { padding: 18px 2px; border: none; background: none; color: white; font-size: 10px; cursor: pointer; border-bottom: 1px solid #2563eb; width: 100%; text-align: center; }
+  .main-container { display: flex; flex: 1; overflow: hidden; position: relative; }
+  
+  nav { width: 75px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; height: 100%; border-right: 1px solid #2563eb; }
+  nav button { padding: 20px 2px; border: none; background: none; color: white; font-size: 10px; cursor: pointer; border-bottom: 1px solid #2563eb; }
   nav button.active { background: var(--p); border-left: 5px solid white; font-weight: bold; }
 
-  .content-wrapper { flex: 1; position: relative; height: 100%; background: #f0f4ff; overflow: hidden; }
-  .page { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px; overflow-y: auto; background: #f0f4ff; -webkit-overflow-scrolling: touch; }
+  .content-wrapper { flex: 1; position: relative; height: 100%; overflow: hidden; }
+  .page { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .page.active { display: block !important; }
 
-  .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; }
-  .row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
-  .btn-s { padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; font-size: 10px; min-width: 50px; background: white; font-weight: bold; }
-  .btn-s.off { background: var(--d); color: white; }
-  .btn-n { padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; width: 40px; background: #f8fafc; font-weight: bold; }
+  .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f8fafc; }
+  .stu-name { font-size: 12px; font-weight: 600; color: #334155; flex: 1; }
+  .stu-link { color: var(--p); text-decoration: underline; cursor: pointer; }
+
+  .btn-s { padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 10px; min-width: 55px; background: #f8fafc; font-weight: bold; }
+  .btn-s.off { background: var(--d); color: white; border-color: var(--d); }
+  .btn-s.on { background: var(--p); color: white; border-color: var(--p); }
+  
+  .btn-n { padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; width: 38px; background: #f8fafc; font-weight: bold; }
   .btn-n.selected { background: var(--p); color: white; }
+  
   .btn-m { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--p); color: white; font-weight: bold; cursor: pointer; }
   
-  input, textarea, select { width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; background: white; }
-  textarea { resize: none; font-style: italic; color: #444; }
+  input, textarea, select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; background: #fff; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; background: white; }
+  th, td { border: 1px solid #e2e8f0; padding: 10px 5px; text-align: center; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 10px; background: white; margin-top: 10px; }
-  th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-  #kMdl { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center; }
-  .k-card { background:white; border-radius:20px; width:85%; max-width:350px; padding:25px; }
+  #modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:99999; align-items:center; justify-content:center; padding:20px; }
+  .k-card { background:white; border-radius:20px; width:100%; max-width:350px; padding:25px; }
 </style>
 </head>
 <body>
@@ -47,136 +55,94 @@
 <header>ÖĞRETMEN TAKİP PRO</header>
 
 <div class="top-panel">
-  <span id="curClassName" style="font-size:11px;">Sınıf: 4-B</span>
-  <button onclick="saveAll()" style="background:var(--s); color:white; border:none; padding:8px 15px; border-radius:6px; font-weight:bold;">💾 KAYDET</button>
+  <span id="displayClass" style="font-size:12px; font-weight:bold;">Yükleniyor...</span>
+  <button onclick="saveAll()" style="background:var(--s); color:white; border:none; padding:8px 15px; border-radius:6px; font-weight:bold; font-size:11px;">💾 KAYDET</button>
 </div>
 
 <div class="main-container">
-  <nav id="sidebar">
-    <button onclick="pg('p1', this)" class="active">YOKLAMA</button>
-    <button onclick="pg('p2', this)">KATILIM</button>
-    <button onclick="pg('p3', this)">ÖDEV</button>
-    <button onclick="pg('p6', this)">SÖZLÜ</button>
-    <button onclick="pg('p4', this)">RAPOR</button>
-    <button onclick="pg('p5', this)">AYAR</button>
+  <nav id="navbar">
+    <button onclick="navTo('p1', this)" class="active">YOKLAMA</button>
+    <button onclick="navTo('p2', this)">KATILIM</button>
+    <button onclick="navTo('p3', this)">ÖDEV</button>
+    <button onclick="navTo('p6', this)">SÖZLÜ</button>
+    <button onclick="navTo('p4', this)">RAPOR</button>
+    <button onclick="navTo('p5', this)">AYAR</button>
   </nav>
 
   <div class="content-wrapper">
-    <div id="p1" class="page active"><div class="card"><h3>Yoklama</h3><input type="date" id="t1" onchange="ren()"><div id="l1"></div></div></div>
-    <div id="p2" class="page"><div class="card"><h3>Katılım</h3><select id="s2" onchange="ren()"></select><div id="l2"></div></div></div>
+    <div id="p1" class="page active"><div class="card"><h3>Yoklama</h3><input type="date" id="dateInput" onchange="render()"><div id="list1"></div></div></div>
+    <div id="p2" class="page"><div class="card"><h3>Katılım (⭐)</h3><select id="selKat" onchange="render()"></select><div id="list2"></div></div></div>
+    <div id="p3" class="page"><div class="card"><h3>Ödev Takibi</h3><select id="selOdev" onchange="render()"></select><textarea id="odevNote" placeholder="Ödev notu..." rows="2" oninput="saveNote('odev')"></textarea><div id="list3"></div></div></div>
+    <div id="p6" class="page"><div class="card"><h3>Sözlü (1-4)</h3><select id="selSozlu" onchange="render()"></select><textarea id="sozluNote" placeholder="Konu..." rows="2" oninput="saveNote('sozlu')"></textarea><div id="list6"></div></div></div>
+    <div id="p4" class="page"><div class="card"><h3>Rapor</h3><button class="btn-m" style="background:var(--s); margin-bottom:12px" onclick="exportXLS()">📥 EXCEL İNDİR</button><div id="reportArea" style="overflow-x:auto"></div></div></div>
     
-    <div id="p3" class="page">
-        <div class="card">
-            <h3>Ödev Takibi</h3>
-            <select id="s3" onchange="ren()"></select>
-            <textarea id="oDesc" placeholder="Ödev konusunu buraya yazın..." rows="3" oninput="saveNotes()"></textarea>
-            <div id="l3"></div>
-        </div>
-    </div>
-
-    <div id="p6" class="page">
-        <div class="card">
-            <h3>Sözlü Puanı (1-4)</h3>
-            <select id="s6" onchange="ren()"></select>
-            <textarea id="sDesc" placeholder="Sözlü/Değerlendirme konusunu buraya yazın..." rows="3" oninput="saveNotes()"></textarea>
-            <div id="l6"></div>
-        </div>
-    </div>
-
-    <div id="p4" class="page"><div class="card"><h3>Genel Rapor</h3><button class="btn-m" style="background:var(--s); margin-bottom:10px" onclick="ex()">EXCEL İNDİR</button><div id="l4"></div></div></div>
     <div id="p5" class="page">
         <div class="card">
-            <button class="btn-m" style="background:var(--d)" onclick="if(confirm('Sıfırlansın mı?')){localStorage.clear();location.reload();}">⚠️ SİSTEMİ SIFIRLA</button>
+            <h3>Sınıf ve Öğrenci Yönetimi</h3>
+            <input type="text" id="iCN" placeholder="Sınıf Adı (Örn: 4-B)">
+            <textarea id="iCS" rows="5" placeholder="Öğrenci isimleri (Her satıra bir isim)"></textarea>
+            <button class="btn-m" onclick="addNewClass()">Sınıfı Kaydet / Güncelle</button>
+        </div>
+        <div class="card">
+            <button class="btn-m" style="background:var(--d)" onclick="resetApp()">⚠️ SİSTEMİ SIFIRLA</button>
         </div>
     </div>
   </div>
 </div>
 
-<div id="kMdl" onclick="this.style.display='none'"><div class="k-card" id="kBox" onclick="event.stopPropagation()"></div></div>
+<div id="modal" onclick="closeModal()">
+    <div class="k-card" onclick="event.stopPropagation()">
+        <div id="kContent"></div>
+        <button class="btn-m" style="margin-top:20px; background:#475569" onclick="closeModal()">KAPAT</button>
+    </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const defO = ["Ali Ömer ARSLAN","Arda ARSLAN","Ayşe ŞINIK","Barış HALLUM","Beyazıt GÖRKEN","Bilgesu TOPRAK","Bora ALAS","Defne KAYNAR","Derin URAZ","Elif ÇİTKAP","Emir Efe ALPER","Esra DEMİRLİ","Eymen HALICI","Hüma ALTINIŞIK","İpek ELDEK","Irmak ERDEM","Kumsal GÜNDOĞARKEN","Melis KILIÇ","Mert BALCIOĞLU","Musa KARAÖZ","Mustafa DAL","Naz AKGÜN","Nisa YALILAR","Onuralp TOK","Önder TURĞAY","Poyraz SEZGİN","Roza AYDIN","Rüzgar GÜL","Yaz YILMAZ","Yusuf BİRLİK"];
-const defD = ["Türkçe","Matematik","Fen","Sosyal","İngilizce","Trafik","İnsan Hakları"];
+const defD = ["Türkçe","Matematik","Fen Bilimleri","Sosyal Bilgiler","İngilizce","Trafik Güvenliği","İnsan Hakları"];
 
-let st = JSON.parse(localStorage.getItem('ok_v45_engine')) || { cls: {"4-B": defO}, cur: "4-B", ders: defD, db: {v:{}, k:{}, od:{}, sz:{}, notes:{}, sozNotes:{}} };
+let st = JSON.parse(localStorage.getItem('ok_v47')) || {
+    cls: {"4-B": defO}, cur: "4-B", ders: defD,
+    db: { v:{}, k:{}, od:{}, sz:{}, n_od:{}, n_sz:{} }
+};
 
-function pg(id, btn) {
+function navTo(id, btn) {
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).style.display = 'block';
     btn.classList.add('active');
-    if(id === 'p4') rRap();
+    if(id === 'p4') renderReport();
 }
 
-function saveAll() { localStorage.setItem('ok_v45_engine', JSON.stringify(st)); alert("Kaydedildi!"); }
+function saveAll() { localStorage.setItem('ok_v47', JSON.stringify(st)); alert("Kaydedildi!"); }
 
-function saveNotes() {
-    const dO = document.getElementById('s3').value;
-    const dS = document.getElementById('s6').value;
-    if(dO) st.db.notes[dO + "_" + st.cur] = document.getElementById('oDesc').value;
-    if(dS) st.db.sozNotes[dS + "_" + st.cur] = document.getElementById('sDesc').value;
+function addNewClass() {
+    const n = document.getElementById('iCN').value.trim();
+    const s = document.getElementById('iCS').value.split('\n').filter(x=>x.trim()!=="").sort((a,b)=>a.localeCompare(b,'tr'));
+    if(!n || s.length===0) return alert("Hata!");
+    st.cls[n] = s; st.cur = n; saveAll(); location.reload();
 }
 
-function uV(type, key, name, val) {
+function resetApp() { if(confirm('Tüm veriler silinsin mi?')){ localStorage.clear(); location.reload(); } }
+
+function saveNote(type) {
+    const selId = type === 'odev' ? 'selOdev' : 'selSozlu';
+    const noteId = type === 'odev' ? 'odevNote' : 'sozluNote';
+    const key = document.getElementById(selId).value;
+    if(key) st.db[type === 'odev' ? 'n_od' : 'n_sz'][key + "_" + st.cur] = document.getElementById(noteId).value;
+}
+
+function updateVal(type, key, name, val) {
     const fK = key + "_" + st.cur;
     if(!st.db[type][fK]) st.db[type][fK] = {};
     st.db[type][fK][name] = val;
-    ren();
+    render();
 }
 
-function ren() {
+function render() {
     const list = st.cls[st.cur] || [];
-    const tV = document.getElementById('t1').value, dK = document.getElementById('s2').value || "G", dO = document.getElementById('s3').value || "G", dS = document.getElementById('s6').value || "G";
+    const date = document.getElementById('dateInput').value;
+    const cK = document.getElementById('selKat').value || "G", cO = document.getElementById('selOdev').value || "G", cS = document.getElementById('selSozlu').value || "G";
 
-    document.getElementById('l1').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.v[tV+"_"+st.cur]?.[s]==='y'?'off':''}" onclick="uV('v','${tV}','${s}','y')">YOK</button></div>`).join('');
-    document.getElementById('l2').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.k[dK+"_"+st.cur]?.[s]?'on':''}" onclick="uV('k','${dK}','${s}',${!st.db.k[dK+"_"+st.cur]?.[s]})">⭐</button></div>`).join('');
-    document.getElementById('l3').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.od[dO+"_"+st.cur]?.[s]?'on':''}" onclick="uV('od','${dO}','${s}',${!st.db.od[dO+"_"+st.cur]?.[s]})">✅</button></div>`).join('');
-    
-    // Açıklamaları yükle
-    document.getElementById('oDesc').value = st.db.notes[dO + "_" + st.cur] || "";
-    document.getElementById('sDesc').value = st.db.sozNotes[dS + "_" + st.cur] || "";
-
-    document.getElementById('l6').innerHTML = list.map(s => {
-        const v = st.db.sz[dS+"_"+st.cur]?.[s];
-        return `<div class="row"><span style="color:blue; text-decoration:underline" onclick="krn('${s}')">${s}</span><div style="display:flex; gap:4px;">${[1,2,3,4].map(n => `<button class="btn-n ${v==n?'selected':''}" onclick="uV('sz','${dS}','${s}',${n})">${n}</button>`).join('')}</div></div>`;
-    }).join('');
-}
-
-function krn(n) {
-    let y=0, k=0, o=0, pts=[];
-    Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]==='y') y++; });
-    Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) k++; });
-    Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) o++; });
-    Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) pts.push(v[n]); });
-    let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "0";
-    document.getElementById('kBox').innerHTML = `<h2>${n}</h2><hr><br><p>Devamsızlık: ${y} gün</p><p>Toplam Yıldız: ${k}</p><p>Yapılan Ödev: ${o}</p><p>Sözlü Ortalaması: ${avg}</p><br><button class="btn-m" onclick="document.getElementById('kMdl').style.display='none'">KAPAT</button>`;
-    document.getElementById('kMdl').style.display = 'flex';
-}
-
-function rRap() {
-    let h = "<table id='rt'><tr><th>Öğrenci</th><th>Y</th><th>⭐</th><th>✅</th><th>Ort</th></tr>";
-    st.cls[st.cur].forEach(s => {
-        let y=0, k=0, o=0, pts=[];
-        Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]==='y') y++; });
-        Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) k++; });
-        Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) o++; });
-        Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) pts.push(v[s]); });
-        let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "-";
-        h += `<tr><td style="text-align:left; color:blue" onclick="krn('${s}')">${s}</td><td>${y}</td><td>${k}</td><td>${o}</td><td>${avg}</td></tr>`;
-    });
-    document.getElementById('l4').innerHTML = h + "</table>";
-}
-
-function ex() { XLSX.writeFile(XLSX.utils.book_new().appendChild(XLSX.utils.table_to_sheet(document.getElementById('rt'))), st.cur + "_Rapor.xlsx"); }
-
-window.onload = function() {
-    document.getElementById('t1').value = new Date().toISOString().split('T')[0];
-    const opt = '<option value="">-Ders Seçin-</option>' + st.ders.map(d => `<option value="${d}">${d}</option>`).join('');
-    ['s2','s3','s6'].forEach(id => document.getElementById(id).innerHTML = opt);
-    document.getElementById('curClassName').innerText = "Sınıf: " + st.cur;
-    ren();
-};
-</script>
-</body>
-</html>
+    document.getElementById('list1').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button
