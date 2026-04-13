@@ -144,4 +144,44 @@ function renderUI() {
     document.getElementById('l3').innerHTML = list.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${appData.db.od[dO+"_"+appData.cur]?.[s]?'on':''}" onclick="updateVal('od','${dO}','${s}',${!appData.db.od[dO+"_"+appData.cur]?.[s]})">✅</button></div>`).join('');
     document.getElementById('l6').innerHTML = list.map(s => {
         const v = appData.db.sz[dS+"_"+appData.cur]?.[s];
-        return `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><div
+        return `<div class="row"><span class="stu-link" onclick="krn('${s}')">${s}</span><div style="display:flex; gap:3px;">${[1,2,3,4].map(n => `<button class="btn-n ${v==n?'selected':''}" onclick="updateVal('sz','${dS}','${s}',${n})">${n}</button>`).join('')}</div></div>`;
+    }).join('');
+}
+
+function krn(n) {
+    let y=0, k=0, o=0, pts=[];
+    Object.entries(appData.db.v).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]==='y') y++; });
+    Object.entries(appData.db.k).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]) k++; });
+    Object.entries(appData.db.od).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]) o++; });
+    Object.entries(appData.db.sz).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[n]) pts.push(v[n]); });
+    let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "0";
+    document.getElementById('kBox').innerHTML = `<h2>${n}</h2><hr><br><p>Yokluk: <b>${y}</b></p><p>Yıldız: <b>${k}</b></p><p>Ödev: <b>${o}</b></p><p>Sözlü Ort: <b>${avg}</b></p><br><button class="btn-m" onclick="document.getElementById('kMdl').style.display='none'">KAPAT</button>`;
+    document.getElementById('kMdl').style.display = 'flex';
+}
+
+function renderReport() {
+    let h = "<table id='rt'><tr><th>Öğrenci</th><th>Y</th><th>⭐</th><th>✅</th><th>S.Ort</th></tr>";
+    appData.cls[appData.cur].forEach(s => {
+        let y=0, k=0, o=0, pts=[];
+        Object.entries(appData.db.v).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]==='y') y++; });
+        Object.entries(appData.db.k).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]) k++; });
+        Object.entries(appData.db.od).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]) o++; });
+        Object.entries(appData.db.sz).forEach(([key,v])=>{ if(key.endsWith(appData.cur) && v[s]) pts.push(v[s]); });
+        let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "-";
+        h += `<tr><td style="text-align:left; color:blue" onclick="krn('${s}')">${s}</td><td>${y}</td><td>${k}</td><td>${o}</td><td>${avg}</td></tr>`;
+    });
+    document.getElementById('l4').innerHTML = h + "</table>";
+}
+
+function exportExcel() { XLSX.writeFile(XLSX.utils.book_new().appendChild(XLSX.utils.table_to_sheet(document.getElementById('rt'))), appData.cur + "_Rapor.xlsx"); }
+
+window.onload = function() {
+    document.getElementById('t1').value = new Date().toISOString().split('T')[0];
+    const opt = '<option value="">-Ders-</option>' + appData.ders.map(d => `<option value="${d}">${d}</option>`).join('');
+    ['s2','s3','s6'].forEach(id => document.getElementById(id).innerHTML = opt);
+    document.getElementById('curClassName').innerText = "Sınıf: " + appData.cur;
+    renderUI();
+};
+</script>
+</body>
+</html>
