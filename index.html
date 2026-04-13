@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Takip PRO V36</title>
+<title>Takip PRO V37</title>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#2563eb">
 
 <style>
   :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; --n1: #94a3b8; --n2: #fbbf24; --n3: #84cc16; --n4: #059669; }
@@ -17,42 +15,52 @@
   body { background: #f0f4ff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: fixed; width: 100%; padding-top: env(safe-area-inset-top); }
   header { background: var(--p); color: white; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; flex-shrink: 0; }
   .top-panel { background: #1e293b; color: white; padding: 8px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; }
+  
   .main-container { display: flex; flex: 1; overflow: hidden; position: relative; }
   
-  nav { width: 70px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; height: 100%; z-index: 100; }
-  nav button { padding: 18px 2px; border: none; background: none; color: white; font-size: 9px; cursor: pointer; border-bottom: 1px solid #2563eb; }
+  /* MENÜ - DONMAYI ÖNLEYEN SABİT YAPI */
+  nav { width: 70px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; height: 100%; z-index: 5000; }
+  nav button { padding: 18px 2px; border: none; background: none; color: white; font-size: 9px; cursor: pointer; border-bottom: 1px solid #2563eb; outline: none; }
   nav button.active { background: var(--p); border-left: 4px solid white; font-weight: bold; }
 
   .content-wrapper { flex: 1; position: relative; height: 100%; background: #f0f4ff; }
-  .page { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .page.active { display: block !important; }
+  
+  /* SAYFALARI ZORLA ÜSTE ÇIKARMA */
+  .page { 
+    display: none; 
+    position: absolute; 
+    top: 0; left: 0; right: 0; bottom: 0; 
+    padding: 12px; 
+    overflow-y: auto; 
+    background: #f0f4ff;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1;
+  }
+  .page.active { display: block !important; z-index: 1000 !important; }
 
   .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; }
   .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
   .stu-link { color: var(--p); font-weight: bold; font-size: 11px; text-decoration: underline; flex: 1; }
   
   .btn-s { padding: 8px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 10px; min-width: 45px; background: white; font-weight: bold; }
-  .btn-s.on { background: var(--p); color: white; }
   .btn-s.off { background: var(--d); color: white; }
   
   .btn-n { padding: 8px; border-radius: 5px; border: 1px solid #ddd; font-size: 11px; font-weight: bold; width: 32px; background: #f8fafc; }
-  .btn-n.active1 { background: var(--n1); color: white; border-color: var(--n1); }
-  .btn-n.active2 { background: var(--n2); color: white; border-color: var(--n2); }
-  .btn-n.active3 { background: var(--n3); color: white; border-color: var(--n3); }
-  .btn-n.active4 { background: var(--n4); color: white; border-color: var(--n4); }
+  .btn-n.active1 { background: var(--n1); color: white; }
+  .btn-n.active2 { background: var(--n2); color: white; }
+  .btn-n.active3 { background: var(--n3); color: white; }
+  .btn-n.active4 { background: var(--n4); color: white; }
 
   .btn-m { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--p); color: white; font-weight: bold; cursor: pointer; }
   select, input { width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; }
-  table { width: 100%; border-collapse: collapse; font-size: 10px; margin-top: 10px; background: white; }
-  th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
-
+  
   #kMdl { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center; }
   .k-card { background:white; border-radius:20px; width:85%; max-width:350px; padding:25px; }
 </style>
 </head>
 <body>
 
-<header>ÖĞRETMEN TAKİP PRO - V36</header>
+<header>ÖĞRETMEN TAKİP PRO V37</header>
 
 <div class="top-panel">
   <span style="font-size:11px;">4-B Sınıf Takibi</span>
@@ -60,7 +68,7 @@
 </div>
 
 <div class="main-container">
-  <nav>
+  <nav id="navbar">
     <button onclick="pg('p1', this)" class="active">YOKLAMA</button>
     <button onclick="pg('p2', this)">KATILIM</button>
     <button onclick="pg('p3', this)">ÖDEV</button>
@@ -75,14 +83,7 @@
     <div id="p3" class="page"><div class="card"><h3>Ödev Takibi</h3><select id="s3" onchange="r()"></select><div id="l3"></div></div></div>
     <div id="p6" class="page"><div class="card"><h3>Sözlü (1-4)</h3><select id="s6" onchange="r()"></select><div id="l6"></div></div></div>
     <div id="p4" class="page"><div class="card"><h3>Raporlar</h3><button class="btn-m" style="background:var(--s); margin-bottom:10px" onclick="ex()">📥 EXCEL İNDİR</button><div id="l4"></div></div></div>
-    
-    <div id="p5" class="page">
-        <div class="card">
-            <h3>Sistem Yönetimi</h3>
-            <p style="font-size:12px; color:#666; margin-bottom:15px;">Tüm verileri silmek ve uygulamayı ilk haline döndürmek için aşağıdaki butonu kullanın.</p>
-            <button class="btn-m" style="background:var(--d)" onclick="if(confirm('TÜM VERİLER SİLİNSİN MI?')){localStorage.clear();location.reload();}">⚠️ SİSTEMİ SIFIRLA</button>
-        </div>
-    </div>
+    <div id="p5" class="page"><div class="card"><h3>Sistem</h3><button class="btn-m" style="background:var(--d)" onclick="sifirla()">⚠️ SİSTEMİ SIFIRLA</button></div></div>
   </div>
 </div>
 
@@ -93,17 +94,27 @@
 const defO = ["Ali Ömer ARSLAN","Arda ARSLAN","Ayşe ŞINIK","Barış HALLUM","Beyazıt GÖRKEN","Bilgesu TOPRAK","Bora ALAS","Defne KAYNAR","Derin URAZ","Elif ÇİTKAP","Emir Efe ALPER","Esra DEMİRLİ","Eymen HALICI","Hüma ALTINIŞIK","İpek ELDEK","Irmak ERDEM","Kumsal GÜNDOĞARKEN","Melis KILIÇ","Mert BALCIOĞLU","Musa KARAÖZ","Mustafa DAL","Naz AKGÜN","Nisa YALILAR","Onuralp TOK","Önder TURĞAY","Poyraz SEZGİN","Roza AYDIN","Rüzgar GÜL","Yaz YILMAZ","Yusuf BİRLİK"];
 const defD = ["Türkçe","Matematik","Fen","Sosyal","İngilizce","Trafik","İnsan Hakları"];
 
-let st = JSON.parse(localStorage.getItem('ok_v36')) || { cls: {"4-B": defO}, cur: "4-B", ders: defD, db: {v:{}, k:{}, od:{}, sz:{}} };
+// Bellek ismini değiştirerek tarayıcıyı tazelemeye zorluyoruz
+let st = JSON.parse(localStorage.getItem('ok_v37_final')) || { cls: {"4-B": defO}, cur: "4-B", ders: defD, db: {v:{}, k:{}, od:{}, sz:{}} };
 
 function pg(id, btn) {
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    var pages = document.getElementsByClassName('page');
+    for (var i = 0; i < pages.length; i++) {
+        pages[i].style.display = 'none';
+        pages[i].classList.remove('active');
+    }
+    var buttons = document.querySelectorAll('nav button');
+    for (var j = 0; j < buttons.length; j++) {
+        buttons[j].classList.remove('active');
+    }
     document.getElementById(id).style.display = 'block';
+    document.getElementById(id).classList.add('active');
     btn.classList.add('active');
     if(id==='p4') rRap();
 }
 
-function sv() { localStorage.setItem('ok_v36', JSON.stringify(st)); alert("Kaydedildi!"); }
+function sv() { localStorage.setItem('ok_v37_final', JSON.stringify(st)); alert("Kaydedildi!"); }
+function sifirla() { if(confirm('Sıfırlansın mı?')){ localStorage.clear(); location.reload(); } }
 
 function u(t, k, n, v) { 
     const key = k + "_" + st.cur;
@@ -117,4 +128,59 @@ function r() {
     const tV = document.getElementById('t1').value, dK = document.getElementById('s2').value, dO = document.getElementById('s3').value, dS = document.getElementById('s6').value;
     
     document.getElementById('l1').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.v[tV+"_"+st.cur]?.[s]==='y'?'off':''}" onclick="u('v','${tV}','${s}','y')">YOK</button></div>`).join('');
-    document.getElementById('l2').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.k[(dK||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('k','${dK||'G'}','${s}',${!st.db.k[(dK||'G')+"_"+st.cur]?.[s]})
+    document.getElementById('l2').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.k[(dK||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('k','${dK||'G'}','${s}',${!st.db.k[(dK||'G')+"_"+st.cur]?.[s]})">⭐</button></div>`).join('');
+    document.getElementById('l3').innerHTML = oL.map(s => `<div class="row"><span>${s}</span><button class="btn-s ${st.db.od[(dO||'G')+"_"+st.cur]?.[s]?'on':''}" onclick="u('od','${dO||'G'}','${s}',${!st.db.od[(dO||'G')+"_"+st.cur]?.[s]})">✅</button></div>`).join('');
+    
+    document.getElementById('l6').innerHTML = oL.map(s => {
+        const p = st.db.sz[(dS||'G')+"_"+st.cur]?.[s];
+        return `<div class="row">
+            <span class="stu-link" onclick="krn('${s}')">${s}</span>
+            <div style="display:flex; gap:3px;">
+                ${[1,2,3,4].map(n => `<button class="btn-n ${p==n?'active'+n:''}" onclick="u('sz','${dS||'G'}','${s}',${n})">${n}</button>`).join('')}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function krn(n) {
+    let y=0, k=0, o=0, pts=[], avg=0;
+    Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]==='y') y++; });
+    Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) k++; });
+    Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) o++; });
+    Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[n]) pts.push(v[n]); });
+    if(pts.length) avg = (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1);
+
+    document.getElementById('kBox').innerHTML = `<h2 style="color:var(--p); border-bottom:2px solid #eee; padding-bottom:10px">${n}</h2><div style="padding:20px 0"><p>Yokluk: <b>${y}</b></p><p>Yıldız: <b>${k}</b></p><p>Ödev: <b>${o}</b></p><p>Sözlü Ort: <b>${avg}</b></p></div><button class="btn-m" onclick="document.getElementById('kMdl').style.display='none'">KAPAT</button>`;
+    document.getElementById('kMdl').style.display = 'flex';
+}
+
+function rRap() {
+    let h = "<table id='rt' style='width:100%; border-collapse:collapse;'><tr><th>Öğrenci</th><th>Y</th><th>⭐</th><th>✅</th><th>S.Ort</th></tr>";
+    st.cls[st.cur].forEach(s => {
+        let y=0, k=0, o=0, pts=[];
+        Object.entries(st.db.v).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]==='y') y++; });
+        Object.entries(st.db.k).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) k++; });
+        Object.entries(st.db.od).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) o++; });
+        Object.entries(st.db.sz).forEach(([key,v])=>{ if(key.endsWith(st.cur) && v[s]) pts.push(v[s]); });
+        let avg = pts.length ? (pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(1) : "-";
+        h += `<tr><td style="text-align:left; color:blue" onclick="krn('${s}')">${s}</td><td>${y}</td><td>${k}</td><td>${o}</td><td>${avg}</td></tr>`;
+    });
+    document.getElementById('l4').innerHTML = h + "</table>";
+}
+
+function ex() {
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.table_to_sheet(document.getElementById('rt'));
+    XLSX.utils.book_append_sheet(wb, ws, "Rapor");
+    XLSX.writeFile(wb, "4B_Rapor.xlsx");
+}
+
+window.onload = function() {
+    document.getElementById('t1').value = new Date().toISOString().split('T')[0];
+    let opt = '<option value="">-Ders-</option>' + st.ders.map(d => `<option value="${d}">${d}</option>`).join('');
+    ['s2','s3','s6'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opt; });
+    r();
+};
+</script>
+</body>
+</html>
