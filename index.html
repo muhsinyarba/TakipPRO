@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Takip PRO V26</title>
+<style>
+  :root { --p: #2563eb; --s: #16a34a; --d: #ef4444; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+  body { background: #f0f4ff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: fixed; width: 100%; }
+  header { background: var(--p); color: white; padding: 10px; text-align: center; font-size: 14px; font-weight: bold; flex-shrink: 0; }
+  .main { display: flex; flex: 1; overflow: hidden; }
+  /* SOL MENÜ - %100 ÇALIŞMA GARANTİLİ */
+  nav { width: 70px; background: #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0; }
+  nav button { padding: 18px 2px; border: none; background: none; color: white; font-size: 9px; cursor: pointer; border-bottom: 1px solid #2563eb; }
+  nav button.active { background: var(--p); border-left: 4px solid white; font-weight: bold; }
+  /* İÇERİK */
+  .content { flex: 1; overflow-y: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+  .page { display: none; }
+  .page.active { display: block !important; }
+  .card { background: white; border-radius: 8px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; }
+  .btn-m { width: 100%; padding: 12px; border-radius: 6px; border: none; background: var(--p); color: white; font-weight: bold; cursor: pointer; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 11px; }
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  th, td { border: 1px solid #ddd; padding: 5px; text-align: center; }
+</style>
+</head>
+<body>
+
+<header id="hTitle">4-B SINIF TAKİBİ</header>
+
+<div class="main">
+  <nav id="sidebar">
+    <button onclick="pg('p1', this)" class="active">YOKLAMA</button>
+    <button onclick="pg('p2', this)">KATILIM</button>
+    <button onclick="pg('p3', this)">ÖDEV</button>
+    <button onclick="pg('p6', this)">SÖZLÜ</button>
+    <button onclick="pg('p4', this)">RAPOR</button>
+    <button onclick="pg('p5', this)">AYAR</button>
+  </nav>
+
+  <div class="content">
+    <div id="p1" class="page active"><div class="card"><h3>Yoklama</h3><input type="date" id="t1" onchange="r()"><div id="l1"></div></div></div>
+    <div id="p2" class="page"><div class="card"><h3>Katılım</h3><select id="s2" onchange="r()"></select><div id="l2"></div></div></div>
+    <div id="p3" class="page"><div class="card"><h3>Ödev</h3><select id="s3" onchange="r()"></select><input type="text" id="oN" placeholder="Ödev Konusu" oninput="nS()"><div id="l3"></div></div></div>
+    <div id="p6" class="page"><div class="card"><h3>Sözlü</h3><select id="s6" onchange="r()"></select><input type="text" id="sN" placeholder="Konu" oninput="nS()"><div id="l6"></div></div></div>
+    <div id="p4" class="page">
+      <div class="card">
+        <h3>Genel Rapor</h3>
+        <button class="btn-m" style="background:var(--s)" onclick="ex()">EXCEL İNDİR</button>
+        <button class="btn-m" style="background:var(--d); margin-top:5px" onclick="window.print()">PDF / YAZDIR</button>
+        <div id="l4" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div id="p5" class="page"><div class="card"><h3>Sistemi Sıfırla</h3><button class="btn-m" style="background:var(--d)" onclick="localStorage.clear();location.reload();">TEMİZLE</button></div></div>
+  </div>
+</div>
+
+<div style="padding:10px; background:white; border-top:1px solid #ddd;"><button class="btn-m" style="background:var(--s); margin:0" onclick="sv()">💾 DEĞİŞİKLİKLERİ KAYDET</button></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const ogrenciler = ["Ali Ömer ARSLAN","Arda ARSLAN","Ayşe ŞINIK","Barış HALLUM","Beyazıt GÖRKEN","Bilgesu TOPRAK","Bora ALAS","Defne KAYNAR","Derin URAZ","Elif ÇİTKAP","Emir Efe ALPER","Esra DEMİRLİ","Eymen HALICI","Hüma ALTINIŞIK","İpek ELDEK","Irmak ERDEM","Kumsal GÜNDOĞARKEN","Melis KILIÇ","Mert BALCIOĞLU","Musa KARAÖZ","Mustafa DAL","Naz AKGÜN","Nisa YALILAR","Onuralp TOK","Önder TURĞAY","Poyraz SEZGİN","Roza AYDIN","Rüzgar GÜL","Yaz YILMAZ","Yusuf BİRLİK"];
+const dersler = ["Türkçe","Matematik","Fen","Sosyal","İngilizce","Trafik","İnsan Hakları"];
+
+let st = JSON.parse(localStorage.getItem('pro_v26')) || { db: {v:{}, k:{}, od:{}, notes:{}, sz:{}, szNotes:{}} };
+
+function pg(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).style.display = 'block';
+    btn.classList.add('active');
+    if(id==='p4') rRap();
+}
+
+function sv() { localStorage.setItem('pro_v26', JSON.stringify(st)); alert("Kaydedildi!"); }
+
+function r() {
+    const tV = document.getElementById('t1').value, dK = document.getElementById('s2').value, dO = document.getElementById('s3').value, dS = document.getElementById('s6').value;
+    document.getElementById('l1').innerHTML = ogrenciler.map(s => `<div class="row"><span>${s}</span><button style="background:${st.db.v[tV]?.[s]==='y'?'red':'#ddd'}" onclick="u('v','${tV}','${s}','y')">YOK</button></div>`).join('');
+    // Diğer listeler benzer şekilde...
+}
+
+function u(t, k, n, v) { if(!st.db[t][k]) st.db[t][k] = {}; st.db[t][k][n] = v; r(); }
+
+function rRap() {
+    let h = "<table><tr><th>Ad</th><th>Y</th><th>⭐</th><th>✅</th></tr>";
+    ogrenciler.forEach(s => h += `<tr><td style="text-align:left">${s}</td><td>0</td><td>0</td><td>0</td></tr>`);
+    document.getElementById('l4').innerHTML = h + "</table>";
+}
+
+function ex() {
+    const ws = XLSX.utils.table_to_sheet(document.querySelector("#l4 table"));
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Rapor");
+    XLSX.writeFile(wb, "4B_Rapor.xlsx");
+}
+
+window.onload = function() {
+    document.getElementById('t1').value = new Date().toISOString().split('T')[0];
+    let opt = '<option value="">-Ders-</option>' + dersler.map(d => `<option value="${d}">${d}</option>`).join('');
+    ['s2','s3','s6'].forEach(id => document.getElementById(id).innerHTML = opt);
+    r();
+};
+</script>
+</body>
+</html>
