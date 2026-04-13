@@ -166,4 +166,11 @@ function ex() {
 
 window.onload = function() {
     document.getElementById('t1').value = new Date().toISOString().split('T')[0];
-    let opt = '<option value="">-Ders Seç-</option>' + st.ders.map(d => `<option value="${d}">${d}</option
+    let opt = '<option value="">-Ders Seç-</option>' + st.ders.map(d => `<option value="${d}">${d}</option>`).join('');
+    ['s2','s3','s6'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opt; });
+    document.getElementById('iCS').value = st.cls[st.cur].join('\n');
+    r();
+};
+</script>
+</body>
+</html>
